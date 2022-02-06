@@ -1,6 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "java.checkstyle.configuration": "${workspaceFolder}/checkstyle.xml",
+    "java.checkstyle.configuration": "checkstyle.xml",
     "java.checkstyle.version": "9.3",
-    "java.format.settings.url": "${workspaceFolder}/eclipse-java-google-style.xml"
+    "java.format.settings.url": "eclipse-java-google-style.xml"
 }

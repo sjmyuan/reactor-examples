@@ -1,12 +1,9 @@
 
 package io.github.sjmyuan;
 
-import reactor.core.publisher.Mono;
-
 import java.util.Optional;
-
 import org.junit.Test;
-
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 public class MonoCreationTest {
