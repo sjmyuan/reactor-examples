@@ -7,6 +7,7 @@ import reactor.test.StepVerifier;
 
 public class FluxCreationTest {
 
+
     @Test
     public void canBeCreatedFromNumber() {
         StepVerifier.create(Flux.just(1)).expectNext(1).verifyComplete();
