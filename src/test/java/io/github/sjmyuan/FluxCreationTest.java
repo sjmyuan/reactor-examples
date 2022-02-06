@@ -73,7 +73,7 @@ public class FluxCreationTest {
     }
 
     @Test
-    public void canGenerateARangeOfInteger() {
+    public void canGenerateRangeOfInteger() {
         StepVerifier.create(Flux.range(1, 3)).expectNext(1).expectNext(2).expectNext(3)
                 .verifyComplete();
     }
@@ -81,5 +81,18 @@ public class FluxCreationTest {
     @Test
     public void canGenerateEmpty() {
         StepVerifier.create(Flux.empty()).verifyComplete();
+    }
+
+    @Test
+    public void canBeCreatedFromStateFunction() {
+        Flux<Integer> flux = Flux.<Integer, Integer>generate(() -> 1, (s, u) -> {
+            if (s < 3) {
+                u.next(s);
+            } else {
+                u.complete();
+            }
+            return s + 1;
+        });
+        StepVerifier.create(flux).expectNext(1).expectNext(2).verifyComplete();
     }
 }
