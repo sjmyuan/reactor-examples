@@ -25,4 +25,10 @@ public class MonoCreationTest {
         value = Optional.of("hello world");
         StepVerifier.create(Mono.justOrEmpty(value)).expectNext("hello world").verifyComplete();
     }
+
+    @Test
+    public void canBeCreatedFromCallable() {
+        StepVerifier.create(Mono.fromCallable(() -> "hello world!")).expectNext("hello world!")
+                .verifyComplete();
+    }
 }
