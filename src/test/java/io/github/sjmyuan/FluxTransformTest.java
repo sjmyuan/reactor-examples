@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuples;
 
-public class FluxOperationTest {
+public class FluxTransformTest {
 
     private Flux<Integer> flux;
 

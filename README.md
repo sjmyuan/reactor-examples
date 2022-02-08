@@ -2,8 +2,7 @@
 
 This is a collection of [project-reactor](https://projectreactor.io/) usage examples
 
-## Creation
+## Creating Sequence
+## Transforming Sequence
 
-## Operation
-
-## Unwrap
+## Peeking Sequence
