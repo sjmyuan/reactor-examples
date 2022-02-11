@@ -75,4 +75,61 @@ public class FluxTransformTest {
         StepVerifier.create(flux.takeWhile(x -> x < 3)).expectNext(1).expectNext(2)
                 .verifyComplete();
     }
+
+    @Test
+    public void canTakeTheSpecifiedElement() {
+        StepVerifier.create(flux.elementAt(3)).expectNext(4).verifyComplete();
+    }
+
+    @Test
+    public void canEmitErrorIfEmpty() {
+        StepVerifier.create(Flux.empty().last()).expectError();
+    }
+
+    @Test
+    public void canEmitDefaultValueIfEmpty() {
+        StepVerifier.create(Flux.empty().last(10)).expectNext(10).verifyComplete();
+    }
+
+    @Test
+    public void canSkipGivenNumberOfElement() {
+        StepVerifier.create(flux.skip(5)).expectNext(6).verifyComplete();
+    }
+
+    @Test
+    public void canSkipGivenNumberOfLastElement() {
+        StepVerifier.create(flux.skipLast(5)).expectNext(1).verifyComplete();
+    }
+
+    @Test
+    public void canSkipElementUntilMeetingCondition() {
+        StepVerifier.create(flux.skipUntil(x -> x > 4)).expectNext(5).expectNext(6)
+                .verifyComplete();
+    }
+
+    @Test
+    public void canSkipElementUntilNotMeetingCondition() {
+        StepVerifier.create(flux.skipWhile(x -> x < 5)).expectNext(5).expectNext(6)
+                .verifyComplete();
+    }
+
+    @Test
+    public void canCheckIfSequenceOnlyOneElement() {
+        StepVerifier.create(flux.single()).expectError();
+        StepVerifier.create(Flux.empty().single(2)).expectNext(2).verifyComplete();
+        StepVerifier.create(Flux.just(1).single()).expectNext(1).verifyComplete();
+    }
+
+    @Test
+    public void canRecoverFromError() {
+        StepVerifier.<Integer>create(
+                Flux.<Integer>error(new RuntimeException("error")).onErrorResume(e -> Flux.just(1)))
+                .expectNext(1).verifyComplete();
+    }
+
+    @Test
+    public void canRecoverFromEmptySequence() {
+        StepVerifier.<Integer>create(Flux.<Integer>empty().switchIfEmpty(Flux.just(1)))
+                .expectNext(1).verifyComplete();
+    }
 }
