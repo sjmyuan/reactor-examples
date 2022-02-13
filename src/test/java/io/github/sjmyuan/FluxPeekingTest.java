@@ -79,4 +79,35 @@ public class FluxPeekingTest {
         assertThat(list.size()).isEqualTo(1);
 
     }
+
+    @Test
+    public void canDoSomethingFinally() {
+
+        List<Integer> list = new LinkedList<Integer>();
+        flux.doOnNext(x -> list.add(x)).doFinally(signal -> list.add(1))
+                .doFinally(signal -> list.add(2)).doFinally(signal -> list.add(3)).collectList()
+                .block();
+        assertThat(list.size()).isEqualTo(9);
+        assertThat(list.get(0)).isEqualTo(1);
+        assertThat(list.get(1)).isEqualTo(2);
+        assertThat(list.get(2)).isEqualTo(3);
+        assertThat(list.get(3)).isEqualTo(4);
+        assertThat(list.get(4)).isEqualTo(5);
+        assertThat(list.get(5)).isEqualTo(6);
+        assertThat(list.get(6)).isEqualTo(3);
+        assertThat(list.get(7)).isEqualTo(2);
+        assertThat(list.get(8)).isEqualTo(1);
+
+        list.clear();
+        StepVerifier
+                .create(Flux.error(new RuntimeException("error")).doFinally(signal -> list.add(-1)))
+                .verifyError();
+        assertThat(list.size()).isEqualTo(1);
+        assertThat(list.get(0)).isEqualTo(-1);
+    }
+
+    @Test
+    public void canPrintTheLogOfEvent() {
+        StepVerifier.create(flux.log()).expectNextCount(6).verifyComplete();
+    }
 }
