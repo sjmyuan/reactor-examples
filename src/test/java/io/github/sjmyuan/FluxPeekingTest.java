@@ -1,7 +1,7 @@
 package io.github.sjmyuan;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Before;
@@ -109,5 +109,34 @@ public class FluxPeekingTest {
     @Test
     public void canPrintTheLogOfEvent() {
         StepVerifier.create(flux.log()).expectNextCount(6).verifyComplete();
+    }
+
+    @Test
+    public void canSetTimeoutBetweenTwoElement() {
+        Flux<Integer> fluxWithLatency = Flux.<Integer, Integer>generate(() -> 1, (s, u) -> {
+            if (s <= 3) {
+                try {
+                    Thread.sleep(s * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                u.next(s);
+            } else {
+                u.complete();
+            }
+            return s + 1;
+        });
+
+        StepVerifier.create(fluxWithLatency.timeout(Duration.ofSeconds(4))).expectNext(1)
+                .expectNext(2).expectNext(3).verifyComplete();
+        StepVerifier.create(fluxWithLatency.timeout(Duration.ofMillis(2500))).expectNext(1)
+                .expectNext(2).expectError();
+    }
+
+    @Test
+    public void canAddDelayBetweenTwoElement() {
+        StepVerifier
+                .create(flux.delayElements(Duration.ofSeconds(2)).timeout(Duration.ofSeconds(1)))
+                .expectError();
     }
 }

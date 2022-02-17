@@ -132,4 +132,27 @@ public class FluxTransformTest {
         StepVerifier.<Integer>create(Flux.<Integer>empty().switchIfEmpty(Flux.just(1)))
                 .expectNext(1).verifyComplete();
     }
+
+    @Test
+    public void canMapTheTypeOfValueInSequenceToAnotherType() {
+        StepVerifier.create(flux.map(x -> x.toString())).expectNext("1").expectNext("2")
+                .expectNext("3").expectNext("4").expectNext("5").expectNext("6").verifyComplete();
+    }
+
+    @Test
+    public void canMapTheValueInSequenceToAnotherValue() {
+        StepVerifier.create(flux.map(x -> x + 1)).expectNext(2).expectNext(3).expectNext(4)
+                .expectNext(5).expectNext(6).expectNext(7).verifyComplete();
+    }
+
+    @Test
+    public void canMapTheValueInSequenceToAnotherSequence() {
+
+        StepVerifier.create(flux.flatMap(x -> Flux.just(x, x))).expectNext(1).expectNext(1)
+                .expectNext(2).expectNext(2).expectNext(3).expectNext(3).expectNext(4).expectNext(4)
+                .expectNext(5).expectNext(5).expectNext(6).expectNext(6).verifyComplete();
+
+        StepVerifier.create(flux.flatMap(x -> Mono.just(x))).expectNext(1).expectNext(2)
+                .expectNext(3).expectNext(4).expectNext(5).expectNext(6).verifyComplete();
+    }
 }

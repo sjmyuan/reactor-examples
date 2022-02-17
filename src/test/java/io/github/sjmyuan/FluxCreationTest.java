@@ -1,5 +1,6 @@
 package io.github.sjmyuan;
 
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,5 +95,16 @@ public class FluxCreationTest {
             return s + 1;
         });
         StepVerifier.create(flux).expectNext(1).expectNext(2).verifyComplete();
+    }
+
+    @Test
+    public void canGenerateAnSequenceWillNeverEmitElement() {
+        StepVerifier.create(Flux.never()).verifyTimeout(Duration.ofSeconds(2));
+    }
+
+    @Test
+    public void canGenerateSequenceWithFixedIntervalBetweenElements() {
+        StepVerifier.create(Flux.interval(Duration.ofSeconds(1), Duration.ofSeconds(1)).take(3))
+                .expectNext(0L).expectNext(1L).expectNext(2L).verifyComplete();
     }
 }
