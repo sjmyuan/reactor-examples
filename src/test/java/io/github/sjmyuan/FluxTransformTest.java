@@ -128,9 +128,15 @@ public class FluxTransformTest {
     }
 
     @Test
-    public void canRecoverFromEmptySequence() {
+    public void canRecoverWithAnotherSequenceFromEmptySequence() {
         StepVerifier.<Integer>create(Flux.<Integer>empty().switchIfEmpty(Flux.just(1)))
                 .expectNext(1).verifyComplete();
+    }
+
+    @Test
+    public void canRecoverWithSingleDefaultValueFromEmptySequence() {
+        StepVerifier.<Integer>create(Flux.<Integer>empty().defaultIfEmpty(1)).expectNext(1)
+                .verifyComplete();
     }
 
     @Test

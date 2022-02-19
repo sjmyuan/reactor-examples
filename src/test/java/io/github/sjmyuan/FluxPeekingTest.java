@@ -1,6 +1,7 @@
 package io.github.sjmyuan;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
