@@ -10,7 +10,7 @@ import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-public class FluxCreationTest {
+public class FluxBoxingTest {
 
     @Test
     public void canBeCreatedFromNumber() {

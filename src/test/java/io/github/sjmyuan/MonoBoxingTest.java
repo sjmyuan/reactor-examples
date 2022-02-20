@@ -6,7 +6,7 @@ import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-public class MonoCreationTest {
+public class MonoBoxingTest {
     @Test
     public void canBeCreatedFromNullableValue() {
         String value = null;
@@ -30,5 +30,12 @@ public class MonoCreationTest {
     public void canBeCreatedFromCallable() {
         StepVerifier.create(Mono.fromCallable(() -> "hello world!")).expectNext("hello world!")
                 .verifyComplete();
+
+    }
+
+    @Test
+    public void canBeCreatedFromThrowable() {
+        StepVerifier.create(Mono.error(new Exception("some error")))
+                .verifyErrorMessage("some error");
     }
 }

@@ -24,6 +24,8 @@ public class FluxPeekingTest {
         List<Integer> list = new LinkedList<Integer>();
         flux.doOnNext(x -> list.add(x)).collectList().block();
         assertThat(list.size()).isEqualTo(6);
+
+        flux.doOnNext(x -> System.out.println(x)).collectList().block();
     }
 
     @Test

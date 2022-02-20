@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 
-public class FluxUnwrapTest {
+public class FluxUnboxingTest {
 
     @Test
     public void canBeConvertedToList() {
