@@ -38,4 +38,15 @@ public class MonoBoxingTest {
         StepVerifier.create(Mono.error(new Exception("some error")))
                 .verifyErrorMessage("some error");
     }
+
+    @Test
+    public void canBeCreatedFromString() {
+        StepVerifier.create(Mono.just("hello world")).expectNext("hello world").verifyComplete();
+    }
+
+    @Test
+    public void canBeCreatedFromNumber() {
+        StepVerifier.create(Mono.just(1)).expectNext(1).verifyComplete();
+        StepVerifier.create(Mono.just(1.0)).expectNext(1.0).verifyComplete();
+    }
 }
